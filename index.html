@@ -66,9 +66,99 @@
     ::-webkit-scrollbar-track { background: #030712; }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--cyan-neon); }
+
+    /* Intro video overlay (sits above everything, including CRT scanlines at z-index 99) */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      background-color: var(--bg-color);
+      background-image:
+        radial-gradient(circle at 50% 40%, rgba(0, 243, 255, 0.08) 0%, rgba(3, 7, 18, 0.98) 70%),
+        linear-gradient(rgba(0, 243, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 25px 25px, 25px 25px;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    #intro-overlay.intro-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro-title {
+      font-family: var(--font-title);
+      color: #ffffff;
+      text-shadow: 0 0 10px var(--cyan-glow), 0 0 24px var(--cyan-glow);
+      letter-spacing: 0.08em;
+      line-height: 1.15;
+    }
+
+    #intro-video {
+      display: none;
+      width: 100%;
+      max-width: 960px;
+      max-height: 60vh;
+      object-fit: contain;
+      border: 1px solid var(--cyan-neon);
+      border-radius: 0.5rem;
+      background: #000;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    #intro-video.intro-video-active {
+      display: block;
+    }
+
+    /* Soundscape (Paisajes Sonoros) controls */
+    #soundscape-tracks button.active {
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    #soundscape-panel.soundscape-disabled {
+      opacity: 0.55;
+    }
+
+    #soundscape-volume {
+      accent-color: var(--cyan-neon);
+    }
   </style>
 </head>
 <body class="crt-overlay flex flex-col min-h-screen">
+
+  <!-- INTRO OVERLAY: experience title + gated intro video. Sits on top of the hub until dismissed. -->
+  <div id="intro-overlay">
+    <div id="intro-text" class="flex flex-col items-center gap-3">
+      <span class="font-mono text-xs md:text-sm text-[var(--cyan-neon)] uppercase tracking-[0.3em]">Terminal 07 // Acceso Biométrico</span>
+      <h1 id="intro-title" class="text-3xl md:text-5xl font-bold">THE BIOMETRIC GATEWAY</h1>
+      <p class="font-mono text-sm md:text-base text-slate-400 max-w-xl">
+        Bienvenido, Operador. Inicia la secuencia de arranque para comenzar la experiencia.
+      </p>
+    </div>
+
+    <video id="intro-video" src="intro.mp4" preload="metadata" playsinline></video>
+
+    <div class="flex flex-col sm:flex-row items-center gap-3">
+      <button id="intro-start-btn" type="button"
+        class="font-title font-bold uppercase tracking-wider text-sm md:text-base px-8 py-3 rounded border border-[var(--cyan-neon)] bg-cyan-950/40 text-[var(--cyan-neon)] hover:bg-[var(--cyan-neon)] hover:text-black transition glow-box-cyan">
+        ▶ ENTRAR / INICIAR EXPERIENCIA
+      </button>
+      <button id="intro-skip-btn" type="button"
+        class="font-mono text-xs md:text-sm uppercase tracking-wider px-5 py-3 rounded border border-slate-700 text-slate-400 hover:border-[var(--cyan-neon)] hover:text-[var(--cyan-neon)] transition">
+        SALTAR INTRO ✕
+      </button>
+    </div>
+  </div>
 
   <header class="bg-slate-950/90 border-b-2 border-[var(--cyan-neon)] px-4 md:px-6 py-3 flex flex-wrap justify-between items-center gap-4 glow-box-cyan z-10">
     <div class="flex items-center gap-3">
@@ -165,6 +255,38 @@
         </div>
       </div>
 
+      <!-- Paisajes Sonoros (Ambient Soundscape) Controls -->
+      <div id="soundscape-panel" class="bg-[var(--panel-bg)] border border-[var(--panel-border)] rounded-lg p-4 shadow-lg">
+        <h2 class="font-title text-xs md:text-sm text-[var(--cyan-neon)] uppercase tracking-wider mb-3 pb-2 border-b border-slate-800 flex justify-between items-center">
+          <span>🎧 Paisajes Sonoros</span>
+          <span id="soundscape-state" class="text-[10px] text-slate-500 font-mono">SIN SEÑAL</span>
+        </h2>
+
+        <!-- Soundscape navigation buttons (rendered from JS config) -->
+        <div id="soundscape-tracks" class="grid grid-cols-1 gap-2 font-mono text-xs mb-3">
+          <!-- Track buttons injected by JS -->
+        </div>
+
+        <!-- Transport controls -->
+        <div class="flex items-center gap-2 mb-3">
+          <button id="soundscape-play" type="button"
+            class="flex-1 font-title font-bold uppercase tracking-wider text-xs px-3 py-2 rounded border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-[var(--cyan-neon)] hover:text-[var(--cyan-neon)] transition">
+            ▶ Play
+          </button>
+          <button id="soundscape-mute" type="button"
+            class="font-title font-bold uppercase tracking-wider text-xs px-3 py-2 rounded border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-[var(--cyan-neon)] hover:text-[var(--cyan-neon)] transition">
+            🔊 Audio
+          </button>
+        </div>
+
+        <!-- Volume slider -->
+        <label class="flex items-center gap-2 font-mono text-[11px] text-slate-400">
+          <span class="uppercase tracking-wider">Vol</span>
+          <input id="soundscape-volume" type="range" min="0" max="100" value="60" class="flex-1 cursor-pointer">
+          <span id="soundscape-volume-label" class="w-8 text-right text-[var(--cyan-neon)]">60</span>
+        </label>
+      </div>
+
     </aside>
 
     <main class="lg:col-span-8 flex flex-col">
@@ -178,6 +300,9 @@
   <footer class="mt-auto py-3 border-t border-slate-800 text-center text-xs font-mono text-slate-500">
     The Biometric Gateway | Experiencia Transmedia de Inglés A2 para 8° Grado
   </footer>
+
+  <!-- Hidden ambient audio element for Paisajes Sonoros. preload="none" + no src by default (no track files exist yet). -->
+  <audio id="ambient-audio" loop preload="none"></audio>
 
   <script>
     // State store
@@ -918,10 +1043,230 @@
       });
     }
 
+    // ---------------------------------------------------------------------
+    // INTRO VIDEO OVERLAY
+    // The overlay shows the title first; the video is preloaded but never
+    // autoplays. Playback only starts from the user's click (Entrar button).
+    // The overlay hides on the video 'ended' event and on the Skip control.
+    // ---------------------------------------------------------------------
+    let introDismissed = false;
+
+    function startIntroVideo() {
+      const video = document.getElementById('intro-video');
+      const introText = document.getElementById('intro-text');
+      const startBtn = document.getElementById('intro-start-btn');
+      if (!video) { endIntro(); return; }
+
+      // Reveal the video and fade the title/start button out of the way.
+      video.classList.add('intro-video-active');
+      if (introText) introText.style.display = 'none';
+      if (startBtn) startBtn.style.display = 'none';
+
+      // play() must be called inside this user-gesture handler. Guard the
+      // returned promise so a blocked playback never throws an uncaught error.
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {
+          // Autoplay/playback blocked: surface native controls so the user
+          // can start it manually; do not crash the experience.
+          video.setAttribute('controls', '');
+        });
+      }
+    }
+
+    function endIntro() {
+      if (introDismissed) return; // idempotent
+      introDismissed = true;
+
+      const overlay = document.getElementById('intro-overlay');
+      const video = document.getElementById('intro-video');
+
+      if (video) {
+        try { video.pause(); } catch (e) { /* no-op */ }
+      }
+      if (!overlay) return;
+
+      overlay.classList.add('intro-hidden');
+      // Remove from layout after the fade-out so the hub is fully interactive.
+      setTimeout(() => { overlay.style.display = 'none'; }, 850);
+    }
+
+    function initIntro() {
+      const startBtn = document.getElementById('intro-start-btn');
+      const skipBtn = document.getElementById('intro-skip-btn');
+      const video = document.getElementById('intro-video');
+
+      if (startBtn) startBtn.addEventListener('click', startIntroVideo);
+      if (skipBtn) skipBtn.addEventListener('click', endIntro);
+      if (video) video.addEventListener('ended', endIntro);
+    }
+
+    // ---------------------------------------------------------------------
+    // PAISAJES SONOROS (Ambient Soundscape) controller
+    // Built to wire up real tracks later. The config starts empty (no audio
+    // files exist yet), so all handlers no-op safely and the UI renders in a
+    // disabled/empty state with no console errors. Audio never auto-plays.
+    // ---------------------------------------------------------------------
+    const AmbientAudio = {
+      // Add real tracks here later, e.g. { id: 'rain', label: 'Lluvia Ácida', src: 'audio/rain.mp3' }
+      tracks: [],
+      currentId: null,
+      isPlaying: false,
+
+      el() { return document.getElementById('ambient-audio'); },
+      hasTracks() { return Array.isArray(this.tracks) && this.tracks.length > 0; },
+      currentTrack() { return this.tracks.find(t => t.id === this.currentId) || null; },
+      // A track is only playable once the user has selected one that has a real src.
+      hasPlayableTrack() { const t = this.currentTrack(); return !!(t && t.src); },
+
+      init() {
+        this.renderTracks();
+        this.bindControls();
+
+        const audio = this.el();
+        if (audio) {
+          const vol = document.getElementById('soundscape-volume');
+          audio.volume = vol ? (parseInt(vol.value, 10) || 0) / 100 : 0.6;
+          audio.addEventListener('ended', () => { /* loop attr handles repeat */ });
+        }
+        this.updateUI();
+      },
+
+      renderTracks() {
+        const container = document.getElementById('soundscape-tracks');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (!this.hasTracks()) {
+          const empty = document.createElement('p');
+          empty.className = 'text-[11px] text-slate-500 italic text-center py-2 border border-dashed border-slate-800 rounded';
+          empty.textContent = 'No hay pistas disponibles todavía.';
+          container.appendChild(empty);
+          return;
+        }
+
+        this.tracks.forEach(track => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.trackId = track.id;
+          btn.className = 'w-full text-left px-3 py-2 rounded border border-slate-800 bg-slate-900/50 text-slate-300 hover:border-[var(--cyan-neon)] transition';
+          btn.textContent = track.label;
+          btn.addEventListener('click', () => this.selectSoundscape(track.id));
+          container.appendChild(btn);
+        });
+      },
+
+      bindControls() {
+        const playBtn = document.getElementById('soundscape-play');
+        const muteBtn = document.getElementById('soundscape-mute');
+        const volume = document.getElementById('soundscape-volume');
+
+        if (playBtn) playBtn.addEventListener('click', () => this.togglePlay());
+        if (muteBtn) muteBtn.addEventListener('click', () => this.toggleMute());
+        if (volume) volume.addEventListener('input', (e) => this.setVolume(e.target.value));
+      },
+
+      selectSoundscape(id) {
+        const track = this.tracks.find(t => t.id === id);
+        const audio = this.el();
+        if (!track || !track.src || !audio) {
+          // No real source to load: safe no-op.
+          this.updateUI();
+          return;
+        }
+        this.currentId = id;
+        audio.src = track.src;
+        // Re-assert the slider volume so a freshly loaded source honors it.
+        const vol = document.getElementById('soundscape-volume');
+        audio.volume = vol ? (parseInt(vol.value, 10) || 0) / 100 : audio.volume;
+        if (this.isPlaying) this._safePlay();
+        this.updateUI();
+      },
+
+      togglePlay() {
+        const audio = this.el();
+        const track = this.currentTrack();
+        // Nothing playable loaded: no-op safely.
+        if (!audio || !track || !track.src) { this.updateUI(); return; }
+
+        if (this.isPlaying) {
+          try { audio.pause(); } catch (e) { /* no-op */ }
+          this.isPlaying = false;
+        } else {
+          this._safePlay();
+        }
+        this.updateUI();
+      },
+
+      _safePlay() {
+        const audio = this.el();
+        if (!audio) return;
+        const p = audio.play();
+        if (p && typeof p.catch === 'function') {
+          p.then(() => { this.isPlaying = true; this.updateUI(); })
+           .catch(() => { this.isPlaying = false; this.updateUI(); });
+        } else {
+          this.isPlaying = true;
+        }
+      },
+
+      toggleMute() {
+        const audio = this.el();
+        if (!audio) return; // no-op if element missing
+        audio.muted = !audio.muted;
+        this.updateUI();
+      },
+
+      setVolume(v) {
+        const val = Math.min(100, Math.max(0, parseInt(v, 10) || 0));
+        const label = document.getElementById('soundscape-volume-label');
+        if (label) label.textContent = val;
+        const audio = this.el();
+        if (audio) audio.volume = val / 100; // safe even with no src
+      },
+
+      updateUI() {
+        const panel = document.getElementById('soundscape-panel');
+        const stateEl = document.getElementById('soundscape-state');
+        const playBtn = document.getElementById('soundscape-play');
+        const muteBtn = document.getElementById('soundscape-mute');
+        const audio = this.el();
+        const hasPlayable = this.hasPlayableTrack();
+
+        // Enable transport controls only once a real track is selected/loaded.
+        if (playBtn) playBtn.disabled = !hasPlayable;
+        if (muteBtn) muteBtn.disabled = !hasPlayable;
+        [playBtn, muteBtn].forEach(b => {
+          if (!b) return;
+          b.classList.toggle('opacity-40', !hasPlayable);
+          b.classList.toggle('cursor-not-allowed', !hasPlayable);
+        });
+
+        // Dim the whole panel only when there are no tracks to choose from at all.
+        if (panel) panel.classList.toggle('soundscape-disabled', !this.hasTracks());
+
+        if (playBtn) playBtn.innerHTML = this.isPlaying ? '❚❚ Pause' : '▶ Play';
+        if (muteBtn) muteBtn.innerHTML = (audio && audio.muted) ? '🔇 Mute' : '🔊 Audio';
+
+        // Highlight the active track.
+        const trackBtns = document.querySelectorAll('#soundscape-tracks button[data-track-id]');
+        trackBtns.forEach(b => b.classList.toggle('active', b.dataset.trackId === this.currentId));
+
+        if (stateEl) {
+          if (!this.hasTracks()) stateEl.textContent = 'SIN SEÑAL';
+          else if (!hasPlayable) stateEl.textContent = 'SELECCIONA PISTA';
+          else if (this.isPlaying) stateEl.textContent = 'EN VIVO';
+          else stateEl.textContent = 'EN ESPERA';
+        }
+      }
+    };
+
     // Initialize application on load
     window.onload = () => {
       switchStep(0);
       updateMetrics();
+      initIntro();
+      AmbientAudio.init();
     };
   </script>
 </body>

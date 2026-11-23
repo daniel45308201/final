@@ -146,7 +146,7 @@
       </p>
     </div>
 
-    <video id="intro-video" src="intro.mp4" preload="auto" playsinline controls></video>
+    <video id="intro-video" src="intro.mp4" preload="metadata" playsinline></video>
 
     <div class="flex flex-col sm:flex-row items-center gap-3">
       <button id="intro-start-btn" type="button"
@@ -1116,6 +1116,8 @@
       el() { return document.getElementById('ambient-audio'); },
       hasTracks() { return Array.isArray(this.tracks) && this.tracks.length > 0; },
       currentTrack() { return this.tracks.find(t => t.id === this.currentId) || null; },
+      // A track is only playable once the user has selected one that has a real src.
+      hasPlayableTrack() { const t = this.currentTrack(); return !!(t && t.src); },
 
       init() {
         this.renderTracks();
@@ -1174,6 +1176,9 @@
         }
         this.currentId = id;
         audio.src = track.src;
+        // Re-assert the slider volume so a freshly loaded source honors it.
+        const vol = document.getElementById('soundscape-volume');
+        audio.volume = vol ? (parseInt(vol.value, 10) || 0) / 100 : audio.volume;
         if (this.isPlaying) this._safePlay();
         this.updateUI();
       },
@@ -1226,9 +1231,9 @@
         const playBtn = document.getElementById('soundscape-play');
         const muteBtn = document.getElementById('soundscape-mute');
         const audio = this.el();
-        const hasPlayable = this.hasTracks();
+        const hasPlayable = this.hasPlayableTrack();
 
-        // Disable transport controls when nothing can play.
+        // Enable transport controls only once a real track is selected/loaded.
         if (playBtn) playBtn.disabled = !hasPlayable;
         if (muteBtn) muteBtn.disabled = !hasPlayable;
         [playBtn, muteBtn].forEach(b => {
@@ -1237,7 +1242,8 @@
           b.classList.toggle('cursor-not-allowed', !hasPlayable);
         });
 
-        if (panel) panel.classList.toggle('soundscape-disabled', !hasPlayable);
+        // Dim the whole panel only when there are no tracks to choose from at all.
+        if (panel) panel.classList.toggle('soundscape-disabled', !this.hasTracks());
 
         if (playBtn) playBtn.innerHTML = this.isPlaying ? '❚❚ Pause' : '▶ Play';
         if (muteBtn) muteBtn.innerHTML = (audio && audio.muted) ? '🔇 Mute' : '🔊 Audio';
@@ -1247,7 +1253,8 @@
         trackBtns.forEach(b => b.classList.toggle('active', b.dataset.trackId === this.currentId));
 
         if (stateEl) {
-          if (!hasPlayable) stateEl.textContent = 'SIN SEÑAL';
+          if (!this.hasTracks()) stateEl.textContent = 'SIN SEÑAL';
+          else if (!hasPlayable) stateEl.textContent = 'SELECCIONA PISTA';
           else if (this.isPlaying) stateEl.textContent = 'EN VIVO';
           else stateEl.textContent = 'EN ESPERA';
         }

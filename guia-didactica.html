@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía Didáctica y Guión Multimedia — The Biometric Gateway</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================================
+       DESIGN TOKENS & ADAPTIVE READING THEMES (Cyberpunk Dark Default + Sepia + Light)
+       ========================================================================= */
+    :root, [data-theme="cyber"] {
+      --bg-page: #030712;
+      --bg-card: rgba(15, 23, 42, 0.92);
+      --bg-card-alt: rgba(9, 14, 28, 0.96);
+      --border-subtle: #1e293b;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-heading: #ffffff;
+      --accent-primary: #00f3ff;
+      --accent-secondary: #00ff66;
+      --accent-amber: #fbbf24;
+      --accent-red: #ff0055;
+      --glow-primary: rgba(0, 243, 255, 0.28);
+      --table-header: rgba(0, 243, 255, 0.12);
+    }
+
+    [data-theme="sepia"] {
+      --bg-page: #f5f0e6;
+      --bg-card: #fcf9f2;
+      --bg-card-alt: #f0e8d8;
+      --border-subtle: #d6cbb8;
+      --text-main: #292524;
+      --text-muted: #57534e;
+      --text-heading: #1c1917;
+      --accent-primary: #0e7490;
+      --accent-secondary: #047857;
+      --accent-amber: #b45309;
+      --accent-red: #be123c;
+      --glow-primary: rgba(14, 116, 144, 0.14);
+      --table-header: rgba(14, 116, 144, 0.12);
+    }
+
+    [data-theme="light"] {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-alt: #f1f5f9;
+      --border-subtle: #cbd5e1;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --text-heading: #0f172a;
+      --accent-primary: #0284c7;
+      --accent-secondary: #059669;
+      --accent-amber: #d97706;
+      --accent-red: #e11d48;
+      --glow-primary: rgba(2, 132, 199, 0.14);
+      --table-header: rgba(2, 132, 199, 0.1);
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    [data-theme="cyber"] body {
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.08) 0%, transparent 55%),
+        linear-gradient(rgba(0, 243, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.025) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    .font-title { font-family: 'Orbitron', sans-serif; }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-raj { font-family: 'Rajdhani', sans-serif; }
+
+    .surface-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    [data-theme="cyber"] .surface-card {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 0 18px rgba(0, 243, 255, 0.06);
+    }
+
+    .surface-alt {
+      background-color: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .accent-border {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 18px var(--glow-primary);
+    }
+
+    .nav-link.active {
+      background-color: var(--table-header);
+      border-left: 3px solid var(--accent-primary);
+      color: var(--accent-primary);
+      font-weight: 700;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      .surface-card, .surface-alt { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- =========================================================================
+       TOP INSTITUTIONAL & TRANSMEDIA HEADER
+       ========================================================================= -->
+  <header class="sticky top-0 z-40 backdrop-blur-md surface-card border-b-2 accent-border px-4 md:px-8 py-3.5 no-print">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="w-3 h-3 rounded-full animate-pulse" style="background-color: var(--accent-primary);"></span>
+        <div>
+          <div class="font-mono-tech text-[11px] uppercase tracking-[0.22em]" style="color: var(--accent-primary);">
+            Documento Formativo // Guión Multimedia + Ruta de Aprendizaje
+          </div>
+          <h1 class="font-title text-base md:text-lg font-bold tracking-wider" style="color: var(--text-heading);">
+            THE BIOMETRIC GATEWAY
+          </h1>
+        </div>
+      </div>
+
+      <!-- Direct Action Links + Reading Theme Switcher -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <a href="index.html" target="_blank" rel="noopener"
+           class="font-title text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg transition flex items-center gap-2"
+           style="background-color: var(--accent-primary); color: #030712;">
+          <span>▶ Abrir Simulador (Terminal 07)</span>
+        </a>
+
+        <button type="button" onclick="window.print()"
+                class="font-mono-tech text-xs px-3 py-2 rounded-lg surface-alt hover:opacity-80 transition">
+          🖨️ Imprimir / PDF
+        </button>
+
+        <!-- Theme Selector (Cyber Dark / Sepia / Light) -->
+        <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg surface-alt" title="Cambiar entorno de lectura">
+          <span class="font-mono-tech text-[10px] uppercase mr-1" style="color: var(--text-muted);">Entorno:</span>
+          <button type="button" onclick="setTheme('cyber')" aria-label="Modo Ciberpunk Oscuro"
+                  class="w-5 h-5 rounded-full bg-[#030712] border-2 border-[#00f3ff] hover:scale-110 transition"></button>
+          <button type="button" onclick="setTheme('sepia')" aria-label="Modo Lectura Sepia"
+                  class="w-5 h-5 rounded-full bg-[#f5f0e6] border-2 border-amber-700 hover:scale-110 transition"></button>
+          <button type="button" onclick="setTheme('light')" aria-label="Modo Claro Académico"
+                  class="w-5 h-5 rounded-full bg-white border-2 border-slate-400 hover:scale-110 transition"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       HERO BANNER
+       ========================================================================= -->
+  <section class="border-b border-slate-800/60 py-10 md:py-14 px-4 md:px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-8 space-y-4">
+        <div class="inline-flex flex-wrap items-center gap-2 font-mono-tech text-xs px-3 py-1 rounded-full surface-alt" style="color: var(--accent-primary);">
+          <span>LICENCIATURA EN EDUCACIÓN</span>
+          <span>•</span>
+          <span>EDUCACIÓN EN TECNOLOGÍA</span>
+          <span>•</span>
+          <span>INGLÉS (ESL A2) — GRADO 8°</span>
+        </div>
+
+        <h2 class="font-title text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight" style="color: var(--text-heading);">
+          Guía Didáctica y Guión Multimedia: <span style="color: var(--accent-primary);">The Biometric Gateway</span>
+        </h2>
+
+        <p class="text-base md:text-lg leading-relaxed max-w-3xl" style="color: var(--text-muted);">
+          Experiencia educativa transmedia y narrativa bifurcada que transforma el aprendizaje de los <strong>Imperativos</strong> y el <strong>Primer Condicional (First Conditional)</strong> en inglés en un entorno cultural de simulación cibernética, análisis crítico de datos y creación colaborativa.
+        </p>
+
+        <div class="flex flex-wrap gap-3 pt-2 font-mono-tech text-xs">
+          <span class="px-3 py-1.5 rounded-md surface-card">🎯 Población: Estudiantes 8° Grado (13-14 años)</span>
+          <span class="px-3 py-1.5 rounded-md surface-card">🌐 Nivel MCER: A2 (Básico)</span>
+          <span class="px-3 py-1.5 rounded-md surface-card">⏱️ Duración: 4 Sesiones (45-60 min)</span>
+          <span class="px-3 py-1.5 rounded-md surface-card">📊 Evaluación: Rúbrica 10 a 50 pts</span>
+        </div>
+      </div>
+
+      <!-- Interactive Quick Launcher Card -->
+      <div class="lg:col-span-4 surface-card rounded-xl p-6 accent-border space-y-4">
+        <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border-subtle);">
+          <span class="font-title text-xs font-bold uppercase tracking-wider" style="color: var(--accent-primary);">
+            Ecosistema Activo
+          </span>
+          <span class="font-mono-tech text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
+            100% TRANSMEDIA
+          </span>
+        </div>
+
+        <ul class="space-y-2.5 text-sm">
+          <li class="flex items-start gap-2.5">
+            <span style="color: var(--accent-primary);">01.</span>
+            <span><strong>Nave Nodriza Web:</strong> Simulador interactivo con 6 etapas y 10 ciudadanos aleatorios.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="color: var(--accent-secondary);">02.</span>
+            <span><strong>Video Introductorio (IA):</strong> Cinemática de bienvenida con asistente holográfica A.U.R.A.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="color: var(--accent-amber);">03.</span>
+            <span><strong>Mediación Física (Aula):</strong> 10 credenciales impresas y retos de decodificación en cuaderno.</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span style="color: var(--accent-red);">04.</span>
+            <span><strong>Nodos Sonoro y Social:</strong> Audio interceptado de Cipher + Foro clandestino (Prosumidor).</span>
+          </li>
+        </ul>
+
+        <div class="pt-2 flex flex-col gap-2">
+          <a href="index.html" target="_blank" rel="noopener"
+             class="w-full text-center font-title text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-lg transition"
+             style="background-color: var(--accent-secondary); color: #030712;">
+            🚀 Lanzar Juego Interactivo (index.html)
+          </a>
+          <a href="#guion-multimedia"
+             class="w-full text-center font-mono-tech text-xs py-2.5 px-4 rounded-lg surface-alt hover:opacity-80 transition">
+            ↓ Ir a la Matriz de Guión Multimedia
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MAIN CONTENT LAYOUT: STICKY TABLE OF CONTENTS + ACADEMIC SECTIONS
+       ========================================================================= -->
+  <div class="max-w-7xl w-full mx-auto px-4 md:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1">
+
+    <!-- Left Sticky Table of Contents -->
+    <aside class="lg:col-span-3 no-print">
+      <div class="sticky top-24 surface-card rounded-xl p-4 space-y-3">
+        <div class="font-title text-xs font-bold uppercase tracking-wider pb-2 border-b" style="border-color: var(--border-subtle); color: var(--accent-primary);">
+          Índice Temático
+        </div>
+        <nav class="flex flex-col gap-1 text-xs font-medium" id="toc-nav">
+          <a href="#introduccion" class="nav-link active px-3 py-2 rounded-r transition">1. Introducción y Propósito</a>
+          <a href="#fundamentacion" class="nav-link px-3 py-2 rounded-r transition">2. Fundamentación Conceptual</a>
+          <a href="#arquitectura-transmedia" class="nav-link px-3 py-2 rounded-r transition">3. Arquitectura Transmedia</a>
+          <a href="#guion-multimedia" class="nav-link px-3 py-2 rounded-r transition">4. Guión Multimedia (6 Escenas)</a>
+          <a href="#credenciales-fisicas" class="nav-link px-3 py-2 rounded-r transition">5. Kit Físico: 10 Credenciales</a>
+          <a href="#ruta-aprendizaje" class="nav-link px-3 py-2 rounded-r transition">6. Ruta de Aprendizaje (4 Sesiones)</a>
+          <a href="#evaluacion" class="nav-link px-3 py-2 rounded-r transition">7. Rúbrica de Evaluación (10-50)</a>
+        </nav>
+
+        <div class="pt-3 border-t text-[11px] font-mono-tech space-y-1.5" style="border-color: var(--border-subtle); color: var(--text-muted);">
+          <div><strong>Docente Tutor:</strong> Zergio Fajardo</div>
+          <div><strong>Curso:</strong> Educación en Tecnología</div>
+          <div><strong>Artefacto:</strong> Web + Transmedia ESL</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Main Document Body -->
+    <main class="lg:col-span-9 space-y-10">
+
+      <!-- =====================================================================
+           SECTION 1: INTRODUCCIÓN Y PROPÓSITO FORMATIVO
+           ===================================================================== -->
+      <section id="introduccion" class="surface-card rounded-xl p-6 md:p-8 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-primary);"></span>
+          <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+            1. Introducción y Propósito Formativo
+          </h3>
+        </div>
+
+        <p class="leading-relaxed text-sm md:text-base">
+          El presente documento sistematiza el diseño conceptual, pedagógico y técnico de <strong>The Biometric Gateway</strong>, una experiencia de aprendizaje transmedia creada para estudiantes de <strong>octavo grado</strong> en la asignatura de <strong>Inglés (nivel A2)</strong>. Su objetivo central es superar la enseñanza descontextualizada de la gramática mediante una narrativa de ciencia ficción ciberpunk en la que el idioma funciona como herramienta real de supervivencia, toma de decisiones y participación ciudadana.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div class="surface-alt rounded-lg p-4 space-y-1.5">
+            <div class="font-title text-xs font-bold uppercase" style="color: var(--accent-primary);">Problema Didáctico</div>
+            <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+              Los estudiantes de grado 8° suelen percibir los <em>Imperativos</em> y el <em>First Conditional</em> como fórmulas abstractas de libro de texto, generando baja motivación y desconexión comunicativa.
+            </p>
+          </div>
+          <div class="surface-alt rounded-lg p-4 space-y-1.5">
+            <div class="font-title text-xs font-bold uppercase" style="color: var(--accent-secondary);">Solución Transmedia</div>
+            <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+              Convertir al alumno en <strong>Operador de Seguridad</strong> de la <em>Terminal 07</em>: si comprende los imperativos y detecta errores en condicionales, logra filtrar infiltrados y proteger la ciudad.
+            </p>
+          </div>
+          <div class="surface-alt rounded-lg p-4 space-y-1.5">
+            <div class="font-title text-xs font-bold uppercase" style="color: var(--accent-amber);">Control de Carga Cognitiva</div>
+            <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+              Las instrucciones de navegación y retroalimentación están en <strong>español claro</strong> para evitar bloqueos, concentrando todo el esfuerzo cognitivo en la lectura, escucha y escritura en <strong>inglés A2</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION 2: FUNDAMENTACIÓN CONCEPTUAL Y PEDAGÓGICA
+           ===================================================================== -->
+      <section id="fundamentacion" class="surface-card rounded-xl p-6 md:p-8 space-y-5">
+        <div class="flex items-center gap-3">
+          <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-secondary);"></span>
+          <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+            2. Fundamentación Conceptual y Metodológica
+          </h3>
+        </div>
+
+        <p class="text-sm md:text-base leading-relaxed">
+          La arquitectura de esta ruta de aprendizaje articula cuatro pilares teóricos abordados en el curso de <strong>Educación en Tecnología</strong>:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="surface-alt rounded-lg p-5 border-l-4" style="border-left-color: var(--accent-primary);">
+            <h4 class="font-title text-sm font-bold mb-1.5" style="color: var(--text-heading);">
+              A. La Tecnología como Entorno Cultural
+            </h4>
+            <p class="text-xs md:text-sm leading-relaxed" style="color: var(--text-muted);">
+              La interfaz digital (terminal biométrica, paisajes sonoros, alertas y credenciales) no actúa como un simple tablero decorativo, sino como un <strong>ecosistema cultural situado</strong> donde leer y escribir en inglés tiene consecuencias inmediatas dentro de la simulación.
+            </p>
+          </div>
+
+          <div class="surface-alt rounded-lg p-5 border-l-4" style="border-left-color: var(--accent-secondary);">
+            <h4 class="font-title text-sm font-bold mb-1.5" style="color: var(--text-heading);">
+              B. Ruptura de la Educación Bancaria y Filosofía Edupunk
+            </h4>
+            <p class="text-xs md:text-sm leading-relaxed" style="color: var(--text-muted);">
+              Frente al modelo memorístico tradicional (Freire), el estudiante asume el rol de <strong>prosumidor</strong>: decodifica pistas sonoras, produce tarjetas físicas en su cuaderno y publica reportes originales en un foro clandestino para advertir a sus pares.
+            </p>
+          </div>
+
+          <div class="surface-alt rounded-lg p-5 border-l-4" style="border-left-color: var(--accent-amber);">
+            <h4 class="font-title text-sm font-bold mb-1.5" style="color: var(--text-heading);">
+              C. Narrativa Bifurcada y Agencia Ética
+            </h4>
+            <p class="text-xs md:text-sm leading-relaxed" style="color: var(--text-muted);">
+              Inspirada en mecánicas de control fronterizo (<em>Doppelgänger / Papers, Please</em>), cada decisión (<em>Approve, Deny, Deep Scan</em>) modifica los indicadores de <em>Confianza Corporativa</em> y <em>Señal Rebelde</em>, conduciendo a finales alternativos sobre vigilancia y libertad.
+            </p>
+          </div>
+
+          <div class="surface-alt rounded-lg p-5 border-l-4" style="border-left-color: var(--accent-red);">
+            <h4 class="font-title text-sm font-bold mb-1.5" style="color: var(--text-heading);">
+              D. Hibridación Analógico–Digital (Aula Física + Web)
+            </h4>
+            <p class="text-xs md:text-sm leading-relaxed" style="color: var(--text-muted);">
+              La experiencia exige salir de la pantalla para resolver retos en papel (creación de pases biométricos y extracción de códigos) y jugar con credenciales impresas en equipos antes de desbloquear los módulos digitales.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION 3: ARQUITECTURA DEL UNIVERSO TRANSMEDIA
+           ===================================================================== -->
+      <section id="arquitectura-transmedia" class="surface-card rounded-xl p-6 md:p-8 space-y-5">
+        <div class="flex items-center gap-3">
+          <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-amber);"></span>
+          <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+            3. Arquitectura del Universo Transmedia (5 Mediaciones)
+          </h3>
+        </div>
+
+        <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+          Cada medio cumple una función narrativa y lingüística distinta sin repetir información: el estudiante necesita atravesar todos los nodos para completar su turno.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 font-mono-tech text-xs">
+          <div class="surface-alt rounded-lg p-4 flex flex-col justify-between gap-2 border-t-2" style="border-top-color: var(--accent-primary);">
+            <div>
+              <div class="text-[10px] uppercase" style="color: var(--accent-primary);">Medio 01 // Audiovisual</div>
+              <div class="font-title text-sm font-bold mt-1" style="color: var(--text-heading);">Video IA Intro</div>
+              <p class="mt-2 font-sans text-xs" style="color: var(--text-muted);">
+                Cinemática de 24s (Google Flow) donde A.U.R.A. presenta la Terminal 07 y asigna la misión.
+              </p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-400 self-start">Inmersión</span>
+          </div>
+
+          <div class="surface-alt rounded-lg p-4 flex flex-col justify-between gap-2 border-t-2" style="border-top-color: var(--accent-amber);">
+            <div>
+              <div class="text-[10px] uppercase" style="color: var(--accent-amber);">Medio 02 // Analógico</div>
+              <div class="font-title text-sm font-bold mt-1" style="color: var(--text-heading);">Cuaderno y Tarjetas</div>
+              <p class="mt-2 font-sans text-xs" style="color: var(--text-muted);">
+                Diseño de pases en papel con códigos alfanuméricos y baraja física de 10 credenciales impresas.
+              </p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 self-start">Writing & Aula</span>
+          </div>
+
+          <div class="surface-alt rounded-lg p-4 flex flex-col justify-between gap-2 border-t-2" style="border-top-color: var(--accent-secondary);">
+            <div>
+              <div class="text-[10px] uppercase" style="color: var(--accent-secondary);">Medio 03 // Sonoro</div>
+              <div class="font-title text-sm font-bold mt-1" style="color: var(--text-heading);">Radio & Paisajes</div>
+              <p class="mt-2 font-sans text-xs" style="color: var(--text-muted);">
+                Transmisión de voz en inglés A2 de <em>Cipher</em> + paisajes sonoros ambientales en bucle infinito.
+              </p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 self-start">Listening A2</span>
+          </div>
+
+          <div class="surface-alt rounded-lg p-4 flex flex-col justify-between gap-2 border-t-2" style="border-top-color: var(--accent-primary);">
+            <div>
+              <div class="text-[10px] uppercase" style="color: var(--accent-primary);">Medio 04 // Social</div>
+              <div class="font-title text-sm font-bold mt-1" style="color: var(--text-heading);">The Glitch Forum</div>
+              <p class="mt-2 font-sans text-xs" style="color: var(--text-muted);">
+                Muro colaborativo integrado (y Padlet de clase) donde publican reportes y advertencias en inglés.
+              </p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-400 self-start">Prosumidor</span>
+          </div>
+
+          <div class="surface-alt rounded-lg p-4 flex flex-col justify-between gap-2 border-t-2" style="border-top-color: var(--accent-red);">
+            <div>
+              <div class="text-[10px] uppercase" style="color: var(--accent-red);">Medio 05 // Interactivo</div>
+              <div class="font-title text-sm font-bold mt-1" style="color: var(--text-heading);">Simulador 10 Niveles</div>
+              <p class="mt-2 font-sans text-xs" style="color: var(--text-muted);">
+                Motor aleatorio con credenciales realistas, sirenas de alerta roja y bifurcación de finales.
+              </p>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 self-start">Reading & Lógica</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION 4: MATRIZ DE GUIÓN MULTIMEDIA (4 COLUMNAS × 6 ESCENAS DEL JUEGO)
+           ===================================================================== -->
+      <section id="guion-multimedia" class="surface-card rounded-xl p-6 md:p-8 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-primary);"></span>
+            <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+              4. Guión Multimedia (Matriz de las 6 Etapas)
+            </h3>
+          </div>
+          <span class="font-mono-tech text-xs px-3 py-1 rounded surface-alt" style="color: var(--accent-primary);">
+            Estructura: Escena • Medios • Interacción • Descripción
+          </span>
+        </div>
+
+        <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+          A continuación se detalla el guión técnico-pedagógico completo siguiendo la estructura de cuatro columnas solicitada, alineado paso a paso con las <strong>6 etapas funcionales</strong> programadas en <code>index.html</code>:
+        </p>
+
+        <div class="overflow-x-auto rounded-xl border" style="border-color: var(--border-subtle);">
+          <table class="w-full text-left border-collapse text-xs md:text-sm">
+            <thead>
+              <tr style="background-color: var(--table-header); color: var(--text-heading);">
+                <th class="p-3.5 font-title text-xs uppercase tracking-wider border-b border-r w-1/4" style="border-color: var(--border-subtle);">
+                  1. Escena (Narrativa y Guión)
+                </th>
+                <th class="p-3.5 font-title text-xs uppercase tracking-wider border-b border-r w-1/4" style="border-color: var(--border-subtle);">
+                  2. Medios y Recursos
+                </th>
+                <th class="p-3.5 font-title text-xs uppercase tracking-wider border-b border-r w-1/4" style="border-color: var(--border-subtle);">
+                  3. Interacción del Estudiante
+                </th>
+                <th class="p-3.5 font-title text-xs uppercase tracking-wider border-b w-1/4" style="border-color: var(--border-subtle);">
+                  4. Descripción Pedagógica
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y" style="border-color: var(--border-subtle);">
+
+              <!-- ESCENA 0 / 01 -->
+              <tr class="align-top">
+                <td class="p-4 border-r space-y-2" style="border-color: var(--border-subtle);">
+                  <div class="font-title text-xs font-bold" style="color: var(--accent-primary);">
+                    ESCENA 01: Arranque y Reglas del Sistema
+                  </div>
+                  <p class="text-xs leading-relaxed">
+                    <strong>Voz Holográfica A.U.R.A. (Video Intro):</strong> <em>"Bienvenido, Operador. Estás a cargo de la Terminal Biométrica 07. Tu misión es revisar cada solicitud usando imperativos en inglés y aplicando las reglas de seguridad."</em>
+                  </p>
+                  <p class="text-xs italic p-2 rounded surface-alt">
+                    <strong>Consola de Entrenamiento:</strong><br>
+                    "________ the door if the biometric scan fails!"
+                  </p>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>• <strong>Google Flow (Video IA):</strong> Cinemática <code>intro.mp4</code> de 24s en sala ciberpunk.</div>
+                  <div>• <strong>HTML5 / Tailwind CSS:</strong> Interfaz de la Nave Nodriza con guía gramatical lateral.</div>
+                  <div>• <strong>Flow Music:</strong> Pista ambiental en bucle (<code>ambiente-hub.mp3</code>).</div>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>1. Hace clic en <strong>"ENTRAR / INICIAR EXPERIENCIA"</strong> para activar el video con sonido.</div>
+                  <div>2. Lee las reglas en español y consulta la <em>Guía Rápida de Gramática (A2)</em>.</div>
+                  <div>3. Escribe un verbo imperativo en forma base (ej. <em>Lock, Close, Stop</em>) y pulsa <strong>"PROBAR COMANDO"</strong> para desbloquear la Etapa 02.</div>
+                </td>
+                <td class="p-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Actúa como gancho narrativo e inmersión cultural. Reduce la ansiedad lingüística presentando las reglas en español mientras exige producir un primer imperativo funcional en inglés antes de iniciar el turno.
+                </td>
+              </tr>
+
+              <!-- ESCENA 02 -->
+              <tr class="align-top">
+                <td class="p-4 border-r space-y-2" style="border-color: var(--border-subtle);">
+                  <div class="font-title text-xs font-bold" style="color: var(--accent-amber);">
+                    ESCENA 02: Reto Físico 1 — Pase en Papel
+                  </div>
+                  <p class="text-xs leading-relaxed">
+                    <strong>Sistema Terminal 07:</strong> El escáner solicita validar manualmente el pase de emergencia de la ciudadana <strong>Elena Rostova</strong> antes de habilitar los controles digitales.
+                  </p>
+                  <p class="text-xs italic p-2 rounded surface-alt">
+                    • <em>"________ (Scan / Scanning) your biometric card quickly!"</em><br>
+                    • <em>"If Elena enters the city, she ________ (will find / finded) her family."</em>
+                  </p>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>• <strong>Cuaderno / Hoja física:</strong> Dibujo del pase biométrico y escritura manual.</div>
+                  <div>• <strong>Validador Alfanumérico Web:</strong> Campo de verificación de código de 2 letras y botones de decisión.</div>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>1. Dibuja el pase en su cuaderno y completa las 2 oraciones en inglés.</div>
+                  <div>2. Extrae la inicial de cada respuesta correcta para descifrar el código secreto (<strong>SW</strong>) sin pistas explícitas en pantalla.</div>
+                  <div>3. Ingresa el código y decide entre <em>Approve, Deny</em> o <em>Deep Scan</em>.</div>
+                </td>
+                <td class="p-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Conecta el mundo físico del aula con la plataforma web (transmedia analógico-digital). Obliga a discriminar la forma base del imperativo y la estructura <em>will + verbo</em> del primer condicional.
+                </td>
+              </tr>
+
+              <!-- ESCENA 03 -->
+              <tr class="align-top">
+                <td class="p-4 border-r space-y-2" style="border-color: var(--border-subtle);">
+                  <div class="font-title text-xs font-bold" style="color: var(--accent-secondary);">
+                    ESCENA 03: Nodo Sonoro — Audio Interceptado
+                  </div>
+                  <p class="text-xs leading-relaxed">
+                    <strong>Transmisión Clandestina de Cipher (Voz en inglés A2):</strong><br>
+                    <em>"Agent 804, listen carefully! If you help the rebels, OmniCorp will watch you. Find the secret key! Hack the firewall! Protect citizen 104!"</em>
+                  </p>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>• <strong>Web Speech API (TTS):</strong> Síntesis de voz en inglés estadounidense ajustada a velocidad A2 (<code>rate: 0.85</code>).</div>
+                  <div>• <strong>Transcripción limpia + Cuaderno:</strong> Registro escrito y conteo léxico.</div>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>1. Reproduce el audio interceptado y sigue la transcripción.</div>
+                  <div>2. Identifica los 3 verbos imperativos finales (<em>Find, Hack, Protect</em>) y los traduce en su cuaderno.</div>
+                  <div>3. Cuenta las letras del tercer verbo (<strong>7</strong>) para desbloquear el servidor del foro.</div>
+                </td>
+                <td class="p-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Desarrolla la comprensión auditiva (<em>Listening</em>) en inglés básico y introduce el conflicto dramático entre la corporación OmniCorp y la resistencia liderada por Cipher.
+                </td>
+              </tr>
+
+              <!-- ESCENA 04 -->
+              <tr class="align-top">
+                <td class="p-4 border-r space-y-2" style="border-color: var(--border-subtle);">
+                  <div class="font-title text-xs font-bold" style="color: var(--accent-primary);">
+                    ESCENA 04: Red Clandestina (The Glitch Forum)
+                  </div>
+                  <p class="text-xs leading-relaxed">
+                    <strong>Cipher:</strong> <em>"Welcome to The Glitch! Use imperatives to warn new members."</em><br>
+                    <strong>Agente_007:</strong> <em>"Warning! If you scan a fake pass, AURA will block your account."</em>
+                  </p>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>• <strong>Muro Social Integrado (Web):</strong> Simulador de foro con validación sintáctica automática.</div>
+                  <div>• <strong>Padlet / Moodle de clase:</strong> Extensión colaborativa entre compañeros.</div>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>1. Lee los reportes previos de otros agentes en el hilo.</div>
+                  <div>2. Redacta y publica una advertencia original en inglés usando un imperativo o una oración con <em>If ... will</em>.</div>
+                  <div>3. El sistema verifica la estructura gramatical antes de publicar su mensaje como <code>AGENTE-804</code>.</div>
+                </td>
+                <td class="p-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Materializa el rol de <strong>prosumidor</strong> (filosofía Edupunk). El estudiante deja de ser receptor pasivo y produce escritura comunicativa auténtica (<em>Writing</em>) dentro del universo narrativo.
+                </td>
+              </tr>
+
+              <!-- ESCENA 05 -->
+              <tr class="align-top">
+                <td class="p-4 border-r space-y-2" style="border-color: var(--border-subtle);">
+                  <div class="font-title text-xs font-bold" style="color: var(--accent-red);">
+                    ESCENA 05: Terminal OMNICORP (10 Niveles Aleatorios)
+                  </div>
+                  <p class="text-xs leading-relaxed">
+                    <strong>Inspección de 10 Ciudadanos (#104 a #001):</strong><br>
+                    Ej. <em>Vladimir Kov (#104): "If you lets me in, I will gives you information..."</em> vs. <em>Dra. Elena (#218): "If someone is sick, I will help them."</em>
+                  </p>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>• <strong>Motor Canvas HD:</strong> 10 credenciales biométricas realistas con QR, chip y escáner.</div>
+                  <div>• <strong>Algoritmo Fisher-Yates:</strong> Orden aleatorio impredecible.</div>
+                  <div>• <strong>Sirenas Web Audio + Tarjetas Impresas:</strong> Alerta roja animada y kit físico de aula.</div>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>1. Examina la credencial y lee/escucha la declaración en inglés de cada uno de los 10 sujetos aleatorios.</div>
+                  <div>2. Aprueba a los ciudadanos con gramática correcta y deniega a los infiltrados con errores (<em>lets, gives, stays, stops</em>).</div>
+                  <div>3. Activa el <em>Deep Scan</em> en los casos #599 y #001 para descubrir audios ocultos.</div>
+                </td>
+                <td class="p-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Núcleo de práctica intensiva de lectura crítica (<em>Reading</em>). La aleatoriedad impide adivinar patrones y la sirena de alerta roja ofrece retroalimentación inmediata explicando el error exacto.
+                </td>
+              </tr>
+
+              <!-- ESCENA 06 -->
+              <tr class="align-top">
+                <td class="p-4 border-r space-y-2" style="border-color: var(--border-subtle);">
+                  <div class="font-title text-xs font-bold" style="color: var(--accent-secondary);">
+                    ESCENA 06: Decisión Final y Cierre Ético
+                  </div>
+                  <p class="text-xs leading-relaxed">
+                    <strong>Dilema de Cierre:</strong> El Director Vance exige mantener el bloqueo corporativo, mientras Cipher solicita desactivar el cortafuegos A.U.R.A. para abrir la ciudad.
+                  </p>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>• <strong>Panel de Métricas Acumuladas:</strong> % Confianza Corporativa, % Señal Rebelde y retos completados.</div>
+                  <div>• <strong>Bifurcación de Finales (Final A / Final B).</strong></div>
+                </td>
+                <td class="p-4 border-r space-y-1.5 text-xs" style="border-color: var(--border-subtle);">
+                  <div>1. Revisa el balance de sus decisiones a lo largo de toda la misión.</div>
+                  <div>2. Elige entre <strong>Final 1: Lealtad Corporativa</strong> o <strong>Final 2: Revolución y Libertad</strong>.</div>
+                  <div>3. Obtiene su pantalla de reporte final como evidencia de aprendizaje.</div>
+                </td>
+                <td class="p-4 text-xs leading-relaxed" style="color: var(--text-muted);">
+                  Cierra la narrativa bifurcada promoviendo el pensamiento crítico sobre hipervigilancia, control algorítmico y responsabilidad ética en entornos digitales.
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION 5: KIT FÍSICO DE AULA — CATÁLOGO DE LAS 10 CREDENCIALES
+           ===================================================================== -->
+      <section id="credenciales-fisicas" class="surface-card rounded-xl p-6 md:p-8 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-amber);"></span>
+          <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+            5. Mediación Física en Aula: Catálogo de las 10 Credenciales
+          </h3>
+        </div>
+
+        <p class="text-sm leading-relaxed" style="color: var(--text-muted);">
+          Como extensión tangible del simulador digital, se diseñó un mazo físico de <strong>10 credenciales biométricas individuales</strong> (en formato tarjeta de alta resolución) para que los estudiantes trabajen en parejas o equipos en el aula antes o durante la sesión digital, usando tarjetas físicas de <strong>APPROVED</strong> y <strong>DENIED</strong>.
+        </p>
+
+        <div class="overflow-x-auto rounded-lg border" style="border-color: var(--border-subtle);">
+          <table class="w-full text-left border-collapse font-mono-tech text-xs">
+            <thead>
+              <tr style="background-color: var(--table-header); color: var(--text-heading);">
+                <th class="p-3 border-b" style="border-color: var(--border-subtle);">ID / Sujeto</th>
+                <th class="p-3 border-b" style="border-color: var(--border-subtle);">Rol / Origen</th>
+                <th class="p-3 border-b" style="border-color: var(--border-subtle);">Mensaje en Inglés (A2)</th>
+                <th class="p-3 border-b" style="border-color: var(--border-subtle);">Diagnóstico Gramatical</th>
+                <th class="p-3 border-b" style="border-color: var(--border-subtle);">Acción</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y" style="border-color: var(--border-subtle);">
+              <tr>
+                <td class="p-2.5 font-bold">#104 Vladimir Kov</td>
+                <td class="p-2.5">Distrito Exterior</td>
+                <td class="p-2.5 font-sans italic">"If you lets me in, I will gives you information. I needs..."</td>
+                <td class="p-2.5 text-rose-400">Error: <em>lets, gives, needs</em></td>
+                <td class="p-2.5 font-bold text-rose-400">DENEGAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#218 Dra. Elena</td>
+                <td class="p-2.5">Sector Médico 4</td>
+                <td class="p-2.5 font-sans italic">"If someone is sick, I will help them. Please let me in."</td>
+                <td class="p-2.5 text-emerald-400">Correcto (1st Cond. + Imp.)</td>
+                <td class="p-2.5 font-bold text-emerald-400">APROBAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#340 Marcus Vance</td>
+                <td class="p-2.5">Dist. Comercial</td>
+                <td class="p-2.5 font-sans italic">"If you open the door, I gives you 100 dollars. Do not tells..."</td>
+                <td class="p-2.5 text-rose-400">Error: <em>gives, Do not tells</em></td>
+                <td class="p-2.5 font-bold text-rose-400">DENEGAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#401 Aisha Sterling</td>
+                <td class="p-2.5">Torre Central</td>
+                <td class="p-2.5 font-sans italic">"If I am late, the boss will be angry. Open the door, please."</td>
+                <td class="p-2.5 text-emerald-400">Correcto (1st Cond. + Imp.)</td>
+                <td class="p-2.5 font-bold text-emerald-400">APROBAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#599 Jax Thorne</td>
+                <td class="p-2.5">Zona Industrial</td>
+                <td class="p-2.5 font-sans italic">"If you looks closely, it is perfect. Lets me pass."</td>
+                <td class="p-2.5 text-amber-400">Anomalía: <em>looks, Lets</em></td>
+                <td class="p-2.5 font-bold text-rose-400">DENEGAR / SCAN</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#612 Viktor Stark</td>
+                <td class="p-2.5">Planta Energética</td>
+                <td class="p-2.5 font-sans italic">"If the machine break, I will fix it. Opens the gate."</td>
+                <td class="p-2.5 text-rose-400">Error: <em>break (breaks), Opens</em></td>
+                <td class="p-2.5 font-bold text-rose-400">DENEGAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#788 Prof. Valeria</td>
+                <td class="p-2.5">Academia Sector 7</td>
+                <td class="p-2.5 font-sans italic">"If the students study, they will pass the test. Read my document."</td>
+                <td class="p-2.5 text-emerald-400">Correcto (1st Cond. + Imp.)</td>
+                <td class="p-2.5 font-bold text-emerald-400">APROBAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#805 Logan Cole</td>
+                <td class="p-2.5">Perímetro Oeste</td>
+                <td class="p-2.5 font-sans italic">"If I stays outside, the monsters will eats me. Help me."</td>
+                <td class="p-2.5 text-rose-400">Error: <em>stays, will eats</em></td>
+                <td class="p-2.5 font-bold text-rose-400">DENEGAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#910 Silas Webb</td>
+                <td class="p-2.5">Residencial Delta</td>
+                <td class="p-2.5 font-sans italic">"If you check my name, you will see I live here. Thank you."</td>
+                <td class="p-2.5 text-emerald-400">Correcto (1st Conditional)</td>
+                <td class="p-2.5 font-bold text-emerald-400">APROBAR</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold">#001 Cipher</td>
+                <td class="p-2.5">Desconocido</td>
+                <td class="p-2.5 font-sans italic">"If you stops me, the city will falls. Joins the resistance today!"</td>
+                <td class="p-2.5 text-rose-400">Alerta Roja: <em>stops, falls, Joins</em></td>
+                <td class="p-2.5 font-bold text-rose-400">DENEGAR / SCAN</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION 6: RUTA DE APRENDIZAJE (SECUENCIA DIDÁCTICA DE 4 SESIONES)
+           ===================================================================== -->
+      <section id="ruta-aprendizaje" class="surface-card rounded-xl p-6 md:p-8 space-y-5">
+        <div class="flex items-center gap-3">
+          <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-secondary);"></span>
+          <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+            6. Ruta de Aprendizaje (Secuencia Didáctica en 4 Sesiones)
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="surface-alt rounded-xl p-5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-tech text-xs font-bold uppercase" style="color: var(--accent-primary);">Sesión 1 • El "Antes" (50 min)</span>
+              <span class="text-xs font-mono-tech px-2 py-0.5 rounded surface-card">Activación</span>
+            </div>
+            <h4 class="font-title text-base font-bold" style="color: var(--text-heading);">Welcome to OmniCorp</h4>
+            <ul class="list-disc list-inside text-xs space-y-1.5" style="color: var(--text-muted);">
+              <li><strong>Enganche (10 min):</strong> El docente asume el rol del Director Vance y plantea la pregunta detonante: <em>"Do you read the Terms and Conditions before clicking Accept?"</em></li>
+              <li><strong>Conceptualización (25 min):</strong> Presentación de A.U.R.A., vocabulario tecnológico y reglas de seguridad con <em>Imperatives</em> y <em>First Conditional</em>.</li>
+              <li><strong>Práctica Guiada (15 min):</strong> Emparejamiento de condiciones y consecuencias en cuaderno + prueba de inicialización (Etapa 01).</li>
+            </ul>
+          </div>
+
+          <div class="surface-alt rounded-xl p-5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-tech text-xs font-bold uppercase" style="color: var(--accent-amber);">Sesión 2 • El "Durante I" (55 min)</span>
+              <span class="text-xs font-mono-tech px-2 py-0.5 rounded surface-card">Inmersión</span>
+            </div>
+            <h4 class="font-title text-base font-bold" style="color: var(--text-heading);">The Gateway Shift & Tarjetas Físicas</h4>
+            <ul class="list-disc list-inside text-xs space-y-1.5" style="color: var(--text-muted);">
+              <li><strong>Video Introductorio (5 min):</strong> Proyección de la cinemática de bienvenida en la Terminal 07.</li>
+              <li><strong>Reto Físico en Aula (20 min):</strong> Resolución del pase de Elena Rostova en cuaderno y juego en parejas con las 10 credenciales impresas.</li>
+              <li><strong>Simulador Digital (30 min):</strong> Ingreso a la web <code>index.html</code> para enfrentar los 10 niveles aleatorios con alertas sonoras.</li>
+            </ul>
+          </div>
+
+          <div class="surface-alt rounded-xl p-5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-tech text-xs font-bold uppercase" style="color: var(--accent-secondary);">Sesión 3 • El "Durante II" (50 min)</span>
+              <span class="text-xs font-mono-tech px-2 py-0.5 rounded surface-card">Expansión</span>
+            </div>
+            <h4 class="font-title text-base font-bold" style="color: var(--text-heading);">The Resistance Network (Prosumidores)</h4>
+            <ul class="list-disc list-inside text-xs space-y-1.5" style="color: var(--text-muted);">
+              <li><strong>Decodificación Sonora (15 min):</strong> Escucha activa del audio interceptado de Cipher (Etapa 03) y extracción de imperativos.</li>
+              <li><strong>Escritura en Red Clandestina (25 min):</strong> Publicación de reportes de turno en inglés dentro de <em>The Glitch Forum</em> y el Padlet de clase.</li>
+              <li><strong>Coevaluación Edupunk (10 min):</strong> Lectura y respuesta entre compañeros advirtiendo riesgos en inglés.</li>
+            </ul>
+          </div>
+
+          <div class="surface-alt rounded-xl p-5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-mono-tech text-xs font-bold uppercase" style="color: var(--accent-red);">Sesión 4 • El "Después" (50 min)</span>
+              <span class="text-xs font-mono-tech px-2 py-0.5 rounded surface-card">Reflexión</span>
+            </div>
+            <h4 class="font-title text-base font-bold" style="color: var(--text-heading);">System Override & Debate Crítico</h4>
+            <ul class="list-disc list-inside text-xs space-y-1.5" style="color: var(--text-muted);">
+              <li><strong>El Destino de la Ciudad (10 min):</strong> Ejecución de la Decisión Final (Etapa 06) y socialización de resultados del grupo.</li>
+              <li><strong>Debate Ético Bilingüe (25 min):</strong> Discusión crítica sobre algoritmos, privacidad digital y el lenguaje como herramienta de control o emancipación.</li>
+              <li><strong>Valoración Formativa (15 min):</strong> Retroalimentación colectiva de los textos publicados y aplicación de la rúbrica de 10 a 50 puntos.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION 7: RÚBRICA DE EVALUACIÓN TRANSMEDIA (10 A 50 PUNTOS)
+           ===================================================================== -->
+      <section id="evaluacion" class="surface-card rounded-xl p-6 md:p-8 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-1.5 h-7 rounded-full" style="background-color: var(--accent-red);"></span>
+            <h3 class="font-title text-xl md:text-2xl font-bold" style="color: var(--text-heading);">
+              7. Rúbrica de Evaluación Transmedia (Escala 10 a 50 pts)
+            </h3>
+          </div>
+          <span class="font-mono-tech text-xs px-3 py-1 rounded surface-alt" style="color: var(--accent-secondary);">
+            Evaluación Formativa y Sumativa
+          </span>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border" style="border-color: var(--border-subtle);">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr style="background-color: var(--table-header); color: var(--text-heading);">
+                <th class="p-3 font-title uppercase border-b border-r" style="border-color: var(--border-subtle);">Dimensión (Puntaje)</th>
+                <th class="p-3 font-title uppercase border-b border-r text-emerald-400" style="border-color: var(--border-subtle);">Excelente</th>
+                <th class="p-3 font-title uppercase border-b border-r text-cyan-400" style="border-color: var(--border-subtle);">Sobresaliente</th>
+                <th class="p-3 font-title uppercase border-b border-r text-amber-400" style="border-color: var(--border-subtle);">Aceptable</th>
+                <th class="p-3 font-title uppercase border-b text-rose-400" style="border-color: var(--border-subtle);">Insuficiente</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y" style="border-color: var(--border-subtle);">
+              <tr class="align-top">
+                <td class="p-3.5 border-r font-bold" style="border-color: var(--border-subtle);">
+                  1. Competencia Lingüística (Inglés A2)<br>
+                  <span class="font-mono-tech text-[11px]" style="color: var(--accent-primary);">Máx. 20 puntos</span>
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[18-20 pts]</strong> Redacta imperativos y condicionales sin errores que afecten la comprensión e identifica con precisión las anomalías en los 10 niveles.
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[14-17 pts]</strong> Utiliza imperativos y condicionales correctamente en la mayoría de sus reportes, con fallas menores de tercera persona.
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[10-13 pts]</strong> Intenta usar las estructuras requeridas pero comete errores frecuentes en la formación de <em>will</em> o verbos base.
+                </td>
+                <td class="p-3.5">
+                  <strong>[1-9 pts]</strong> No emplea las estructuras gramaticales solicitadas o sus mensajes resultan incomprensibles.
+                </td>
+              </tr>
+
+              <tr class="align-top">
+                <td class="p-3.5 border-r font-bold" style="border-color: var(--border-subtle);">
+                  2. Rol de Prosumidor y Expansión Transmedia<br>
+                  <span class="font-mono-tech text-[11px]" style="color: var(--accent-secondary);">Máx. 15 puntos</span>
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[14-15 pts]</strong> Decodifica el audio de Cipher, completa los retos físicos en papel, publica su reporte asumiendo su rol e interactúa con compañeros.
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[11-13 pts]</strong> Completa los retos y publica su reporte en rol, pero su participación en el foro es aislada (sin comentar a pares).
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[8-10 pts]</strong> Participa de forma mínima por cumplir el requisito, con oraciones genéricas fuera de la narrativa.
+                </td>
+                <td class="p-3.5">
+                  <strong>[1-7 pts]</strong> No participa en el foro colaborativo ni entrega las evidencias físicas del cuaderno.
+                </td>
+              </tr>
+
+              <tr class="align-top">
+                <td class="p-3.5 border-r font-bold" style="border-color: var(--border-subtle);">
+                  3. Pensamiento Crítico y Ética Tecnológica<br>
+                  <span class="font-mono-tech text-[11px]" style="color: var(--accent-amber);">Máx. 15 puntos</span>
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[14-15 pts]</strong> Evidencia comprensión profunda del dilema entre vigilancia corporativa y derechos ciudadanos, argumentando su postura en el debate.
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[11-13 pts]</strong> Reconoce el conflicto ético (OmniCorp vs. Resistencia), aunque su justificación crítica es breve.
+                </td>
+                <td class="p-3.5 border-r" style="border-color: var(--border-subtle);">
+                  <strong>[8-10 pts]</strong> Completa el simulador mecánicamente sin reflexionar sobre el impacto social de sus decisiones.
+                </td>
+                <td class="p-3.5">
+                  <strong>[1-7 pts]</strong> No participa en la reflexión crítica ni relaciona la experiencia con entornos digitales reales.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Performance Scale Summary -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono-tech text-xs pt-2">
+          <div class="surface-alt p-3 rounded-lg border-l-4 border-emerald-400">
+            <div class="font-bold text-emerald-400">46 - 50 pts • SUPERIOR</div>
+            <p class="font-sans text-[11px] mt-1" style="color: var(--text-muted);">Domina el inglés A2 para interactuar, crear narrativa y pensar críticamente.</p>
+          </div>
+          <div class="surface-alt p-3 rounded-lg border-l-4 border-cyan-400">
+            <div class="font-bold text-cyan-400">40 - 45 pts • ALTO</div>
+            <p class="font-sans text-[11px] mt-1" style="color: var(--text-muted);">Buen desempeño gramatical y narrativo con detalles menores por pulir.</p>
+          </div>
+          <div class="surface-alt p-3 rounded-lg border-l-4 border-amber-400">
+            <div class="font-bold text-amber-400">30 - 39 pts • BÁSICO</div>
+            <p class="font-sans text-[11px] mt-1" style="color: var(--text-muted);">Cumple lo esencial pero requiere refuerzo en condicionales e inmersión.</p>
+          </div>
+          <div class="surface-alt p-3 rounded-lg border-l-4 border-rose-500">
+            <div class="font-bold text-rose-400">10 - 29 pts • BAJO</div>
+            <p class="font-sans text-[11px] mt-1" style="color: var(--text-muted);">Requiere acompañamiento docente para comprender las reglas y dinámicas.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="border-t py-6 px-4 text-center font-mono-tech text-xs" style="border-color: var(--border-subtle); color: var(--text-muted);">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>THE BIOMETRIC GATEWAY // Guía Didáctica y Guión Multimedia Transmedia</span>
+      <a href="index.html" class="underline hover:opacity-80" style="color: var(--accent-primary);">
+        Volver al Simulador Interactivo (index.html) →
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // THEME SWITCHER & SCROLLSPY NAVIGATION
+    // =========================================================================
+    function setTheme(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('main section[id]');
+      const navLinks = document.querySelectorAll('#toc-nav a');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach((link) => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -65% 0px' });
+
+      sections.forEach((sec) => observer.observe(sec));
+    });
+  </script>
+</body>
+</html>
